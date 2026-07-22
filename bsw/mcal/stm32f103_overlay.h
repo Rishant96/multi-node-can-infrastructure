@@ -110,8 +110,22 @@ typedef struct {
 
 #define EXTI              ((EXTI_t *)(APB2_BASE + 0x0400))
 
-#define NVIC_ISER0        (*(volatile uint32_t *)0xE000E100)
-#define NVIC_ISER1        (*(volatile uint32_t *)0xE000E104)
+typedef struct {
+    volatile uint32_t ISER[8U];       /* Offset: 0x000 Interrupt Set Enable Registers */
+    volatile uint32_t RESERVED0[24U];
+    volatile uint32_t ICER[8U];       /* Offset: 0x080 Interrupt Clear Enable Registers */
+    volatile uint32_t RESERVED1[24U];
+    volatile uint32_t ISPR[8U];       /* Offset: 0x100 Interrupt Set Pending Registers */
+    volatile uint32_t RESERVED2[24U];
+    volatile uint32_t ICPR[8U];       /* Offset: 0x180 Interrupt Clear Pending Registers */
+    volatile uint32_t RESERVED3[24U];
+    volatile uint32_t IABR[8U];       /* Offset: 0x200 Interrupt Active Bit Registers */
+    volatile uint32_t RESERVED4[56U];
+    volatile uint8_t  IPR[240U];      /* Offset: 0x300 Interrupt Priority Registers */
+} NVIC_t;
+
+#define NVIC_BASE 0xE000E100U
+#define NVIC      ((NVIC_t *)NVIC_BASE)
 
 #define IRQ_EXTI0         6
 #define IRQ_TIM2          28
