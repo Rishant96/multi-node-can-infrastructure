@@ -1,0 +1,1 @@
+start "" /b w:\4coder\4ed.exe project.4coder

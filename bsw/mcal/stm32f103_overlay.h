@@ -1,0 +1,244 @@
+/* date = July 21st 2026 2:26 pm */
+
+#ifndef STM32F103_OVERLAY_H
+#define STM32F103_OVERLAY_H
+
+#include <stdint.h>
+
+#define PERIPH_BASE 	((uint32_t)0x40000000)
+#define APB1_BASE       (PERIPH_BASE + 0x00000000)
+#define APB2_BASE       (PERIPH_BASE + 0x00010000)
+#define AHB_BASE    	(PERIPH_BASE + 0x00020000)
+#define CAN1_BASE       (PERIPH_BASE + 0x00006400)
+
+typedef struct {
+    volatile uint32_t CR;
+    volatile uint32_t CFGR;
+    volatile uint32_t CIR;
+    volatile uint32_t APB2RSTR;
+    volatile uint32_t APB1RSTR;
+    volatile uint32_t AHBENR;
+    volatile uint32_t APB2ENR;
+    volatile uint32_t APB1ENR;
+    volatile uint32_t BDCR;
+    volatile uint32_t CSR;
+} RCC_t;
+
+#define RCC               ((RCC_t *)(AHB_BASE + 0x1000))
+
+#define RCC_CR_HSION      (1U << 0)
+#define RCC_CR_HSIRDY     (1U << 1)
+#define RCC_CR_HSEON      (1U << 16)
+#define RCC_CR_HSERDY     (1U << 17)
+#define RCC_CR_CSSON	  (1U << 19)
+#define RCC_CR_PLLON      (1U << 24)
+#define RCC_CR_PLLRDY     (1U << 25)
+
+#define RCC_CFGR_SW_HSI   (0U << 0)
+#define RCC_CFGR_SW_HSE   (1U << 0)
+#define RCC_CFGR_SW_PLL   (2U << 0)
+#define RCC_CFGR_SWS_MASK (3U << 2)
+#define RCC_CFGR_SWS_PLL  (2U << 2)
+#define RCC_CFGR_PPRE1_Pos 8U
+#define RCC_CFGR_PPRE1_DIV2  (4U << RCC_CFGR_PPRE1_Pos)
+#define RCC_CFGR_PLLSRC   (1U << 16)
+#define RCC_CFGR_PLLMUL9  (7U << 18)
+
+#define RCC_CIR_CSSF 	  (1U << 7)
+#define RCC_CIR_CSSC 	  (1U << 23)
+
+#define RCC_APB2ENR_AFIOEN   (1U << 0)
+#define RCC_APB2ENR_IOPAEN   (1U << 2)
+#define RCC_APB2ENR_IOPBEN   (1U << 3)
+#define RCC_APB2ENR_IOPCEN   (1U << 4)
+#define RCC_APB2ENR_USART1EN (1U << 14)
+
+#define RCC_APB1ENR_TIM2EN   (1U << 0)
+#define RCC_APB1ENR_CAN1EN   (1U << 25)
+
+typedef struct {
+    volatile uint32_t CRL;
+    volatile uint32_t CRH;
+    volatile uint32_t IDR;
+    volatile uint32_t ODR;
+    volatile uint32_t BSRR;
+    volatile uint32_t BRR;
+    volatile uint32_t LCKR;
+} GPIO_t;
+
+#define GPIOA             ((GPIO_t *)(APB2_BASE + 0x0800))
+#define GPIOB             ((GPIO_t *)(APB2_BASE + 0x0C00))
+#define GPIOC             ((GPIO_t *)(APB2_BASE + 0x1000))
+
+typedef struct {
+    volatile uint32_t CR1;          /* 0x00 */
+    volatile uint32_t CR2;          /* 0x04 */
+    volatile uint32_t SMCR;         /* 0x08 */
+    volatile uint32_t DIER;         /* 0x0C */
+    volatile uint32_t SR;           /* 0x10 */
+    volatile uint32_t EGR;          /* 0x14 */
+    volatile uint32_t CCMR1;        /* 0x18 */
+    volatile uint32_t CCMR2;        /* 0x1C */
+    volatile uint32_t CCER;         /* 0x20 */
+    volatile uint32_t CNT;          /* 0x24 */
+    volatile uint32_t PSC;          /* 0x28 */
+    volatile uint32_t ARR;          /* 0x2C */
+    volatile uint32_t _reserved;    /* 0x30 */
+    volatile uint32_t CCR1;         /* 0x34 */
+    volatile uint32_t CCR2;         /* 0x38 */
+    volatile uint32_t CCR3;         /* 0x3C */
+    volatile uint32_t CCR4;         /* 0x40 */
+    volatile uint32_t _reserved2;   /* 0x44 */
+    volatile uint32_t DCR;          /* 0x48 */
+    volatile uint32_t DMAR;         /* 0x4C */
+} TIM_t;
+
+#define TIM2              ((TIM_t *)(APB1_BASE + 0x0000))
+
+#define TIM_CR1_CEN       (1U << 0) 
+#define TIM_DIER_UIE      (1U << 0) 
+#define TIM_SR_UIF        (1U << 0)   
+
+typedef struct {
+    volatile uint32_t IMR;
+    volatile uint32_t EMR;
+    volatile uint32_t RTSR;
+    volatile uint32_t FTSR;
+    volatile uint32_t SWIER;
+    volatile uint32_t PR;
+} EXTI_t;
+
+#define EXTI              ((EXTI_t *)(APB2_BASE + 0x0400))
+
+#define NVIC_ISER0        (*(volatile uint32_t *)0xE000E100)
+#define NVIC_ISER1        (*(volatile uint32_t *)0xE000E104)
+
+#define IRQ_EXTI0         6
+#define IRQ_TIM2          28
+
+typedef struct {
+    volatile uint32_t ACR;          /* 0x00 */
+    volatile uint32_t KEYR;         /* 0x04 */
+    volatile uint32_t OPTKEYR;      /* 0x08 */
+    volatile uint32_t SR;           /* 0x0C */
+    volatile uint32_t CR;           /* 0x10 */
+    volatile uint32_t AR;           /* 0x14 */
+    volatile uint32_t _reserved;    /* 0x18 */
+    volatile uint32_t OBR;          /* 0x1C */
+    volatile uint32_t WRPR;         /* 0x20 */
+} FLASH_t;
+
+#define FLASH_BASE 0x40022000U
+#define FLASH ((FLASH_t *)FLASH_BASE)
+
+#define FLASH_ACR_LATENCY_2WS    (2U << 0U) /* 2 wait states for frequencies 48-72 MHz */
+#define FLASH_ACR_PRFTBE  		 (1U << 4U) /* enabling Prefetch buffer improves performance */
+
+typedef struct {
+    volatile uint32_t SR; 
+    volatile uint32_t DR;
+    volatile uint32_t BRR;
+    volatile uint32_t CR1;
+    volatile uint32_t CR2;
+    volatile uint32_t CR3;
+    volatile uint32_t GTPR;
+} USART_t;
+
+#define USART1            ((USART_t *)(APB2_BASE + 0x3800))
+
+#define USART_SR_TXE      (1U << 7)
+#define USART_RE_RXNE     (1U << 5)
+
+#define USART_CR1_UE      (1U << 13)
+#define USART_CR1_TE      (1U << 3)
+#define USART_CR1_RE      (1U << 5)
+
+typedef struct {
+    volatile uint32_t FR1;   /* Filter bank x register 1 */
+    volatile uint32_t FR2;   /* Filter bank x register 2 */
+} CAN_FilterRegister;
+
+typedef struct {
+	volatile uint32_t MCR;
+	volatile uint32_t MSR;
+	volatile uint32_t TSR;
+	volatile uint32_t RF0R;
+	volatile uint32_t RF1R;
+	volatile uint32_t IER;
+	volatile uint32_t ESR;
+	volatile uint32_t BTR;
+	volatile uint32_t _reserved[88];
+	volatile uint32_t TI0R;
+	volatile uint32_t TDT0R;
+	volatile uint32_t TDL0R;
+	volatile uint32_t TDH0R;
+	volatile uint32_t TI1R;
+	volatile uint32_t TDT1R;
+	volatile uint32_t TDL1R;
+	volatile uint32_t TDH1R;
+	volatile uint32_t TI2R;
+	volatile uint32_t TDT2R;
+	volatile uint32_t TDL2R;
+	volatile uint32_t TDH2R;
+	volatile uint32_t RI0R;
+	volatile uint32_t RDT0R;
+	volatile uint32_t RDL0R;
+	volatile uint32_t RDH0R;
+	volatile uint32_t RI1R;
+	volatile uint32_t RDT1R;
+	volatile uint32_t RDL1R;
+	volatile uint32_t RDH1R;
+	volatile uint32_t _reserved2[12];
+	volatile uint32_t FMR;
+	volatile uint32_t FM1R;
+	volatile uint32_t _reserved3[1];
+	volatile uint32_t FS1R;
+	volatile uint32_t _reserved4[1];
+	volatile uint32_t FFA1R;
+	volatile uint32_t _reserved5[1];
+	volatile uint32_t FA1R;
+	volatile uint32_t _reserved6[8];
+	CAN_FilterRegister sFilterRegister[28];
+} CAN1_t;
+
+#define CAN1              ((CAN1_t *)(CAN1_BASE + 0x0000))
+#define CAN1_MCR_INRQ     (1U << 0)
+#define CAN1_MCR_SLEEP    (1U << 1)
+
+#define CAN1_MSR_INAK     (1U << 0)
+#define CAN1_MSR_SLAK     (1U << 1)
+#define CAN1_MSR_ERRI     (1U << 2)
+
+#define CAN1_FMR_FINIT    (1U << 0)
+
+#define CAN1_TIXR_TXRQ    (1U << 0)
+#define CAN1_TSR_TME0     (1U << 26)
+#define CAN1_TSR_RQCP0	  (1U << 0)
+
+#define CAN1_RF0R_FMP0    (0x3U << 0)
+#define CAN1_RF0R_RFOM0   (1U << 5)
+
+/* CAN1 MCR bits */
+#define CAN1_MCR_NART     (1U << 4)
+
+/* CAN1 IER bits */
+#define CAN1_IER_FMPIE0   (1U << 1)
+#define CAN1_IER_EWGIE	  (1U << 8)
+#define CAN1_IER_EPVIE	  (1U << 9)
+#define CAN1_IER_BOFIE	  (1U << 10)
+#define CAN1_IER_ERRIE	  (1U << 15)
+
+/* CAN1 BTR helpers */
+#define CAN_BTR_SJW(n)    (((n)-1) << 24)
+#define CAN_BTR_TS2(n)    (((n)-1) << 20)
+#define CAN_BTR_TS1(n)    (((n)-1) << 16)
+#define CAN_BTR_BRP(n)    (((n)-1) << 0)
+
+#define IRQ_CAN_RX0 	  20
+#define IRQ_CAN_SCE 	  22
+
+#define CAN_ESR_EPVF      (1U << 1)
+#define CAN_ESR_BOFF      (1U << 2)
+#define CAN_ESR_LEC       (0x7 << 4)
+
+#endif //STM32F103_OVERLAY_H
