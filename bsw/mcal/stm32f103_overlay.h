@@ -227,7 +227,7 @@ typedef struct {
 
 #define CAN1_TIXR_TXRQ    (1U << 0)
 #define CAN1_TSR_TME0     (1U << 26)
-#define CAN1_TSR_RQCP0	  (1U << 0)
+#define CAN1_TSR_RQCP0	(1U << 0)
 
 #define CAN1_RF0R_FMP0    (0x3U << 0)
 #define CAN1_RF0R_RFOM0   (1U << 5)
@@ -236,7 +236,7 @@ typedef struct {
 #define CAN1_MCR_NART     (1U << 4)
 
 /* CAN1 IER bits */
-#define CAN1_IER_FMPIE0   (1U << 1)
+#define CAN1_IER_FMPIE0     (1U << 1)
 #define CAN1_IER_EWGIE	  (1U << 8)
 #define CAN1_IER_EPVIE	  (1U << 9)
 #define CAN1_IER_BOFIE	  (1U << 10)

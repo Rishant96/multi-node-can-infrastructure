@@ -1,6 +1,9 @@
 @echo off
 setlocal
 
+:: --- Command Routing ---
+if /I "%~1"=="lint" goto lint
+
 if not exist bin mkdir bin
 pushd bin
 
@@ -57,3 +60,9 @@ if %errorlevel% neq 0 exit /b %errorlevel%
 echo [BUILD] SUCCESS. Binary ready for flashing.
 
 popd
+exit /b 0
+
+:lint
+echo [LINT] Running Cppcheck static analysis...
+cppcheck --quiet --enable=warning,style,performance --inline-suppr --addon=misra.json main.c bsw/ lib/
+exit /b %errorlevel%

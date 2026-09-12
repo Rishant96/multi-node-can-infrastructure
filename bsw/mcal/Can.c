@@ -39,18 +39,23 @@ void Can_Init(void)
     CAN1->MCR &= ~(1U << 1); /* Clear SLEEP bit */
     
     CAN1->BTR = 0U;
-    CAN1->BTR |= (3U  << 0);  /* BRP  = 3  (Prescaler = 4) */
+    CAN1->BTR |= ( 3U << 0);  /* BRP  = 3  (Prescaler = 4) */
     CAN1->BTR |= (11U << 16); /* TS1  = 11 (12 Time Quanta) */
-    CAN1->BTR |= (4U  << 20); /* TS2  = 4  (5 Time Quanta) */
-    CAN1->BTR |= (0U  << 24); /* SJW  = 0  (1 Time Quanta) */
+    CAN1->BTR |= ( 4U << 20); /* TS2  = 4  (5 Time Quanta) */
+    CAN1->BTR |= ( 0U << 24); /* SJW  = 0  (1 Time Quanta) */
+    //CAN1->BTR |= ( 1U << 31); /* SILM = 1  (Silent mode enable) */
+    //CAN1->BTR |= ( 1U << 30); /* LBKM = 1  (Loopback mode enable) */
+    
     
     CAN1->FMR |= (1U << 0);   /* Set FINIT bit to enter Filter Init Mode */
     CAN1->FA1R &= ~(1U << 0); /* Deactivate Filter 0 */
-    CAN1->FS1R |= (1U << 0);  /* Set Filter 0 to single 32-bit scale */
-    CAN1->FM1R &= ~(1U << 0); /* Set Filter 0 to ID Mask mode */
+    CAN1->FS1R &= ~(1U << 0);  /* Set Filter 0 to single 16-bit scale */
+    CAN1->FM1R |= (1U << 0); /* Set Filter 0 to ID Mask mode */
     
-    CAN1->sFilterRegister[0].FR1 = 0x00000000U; /* ID = 0 */
-    CAN1->sFilterRegister[0].FR2 = 0x00000000U; /* Mask = 0 (Match all bits) */
+    uint32_t target_id = (0x123U << (16-11));
+    
+    CAN1->sFilterRegister[0].FR1 = (target_id << 16) | target_id; 
+    CAN1->sFilterRegister[0].FR2 = (target_id << 16) | target_id; 
     
     CAN1->FA1R |= (1U << 0);  /* Activate Filter 0 */
     CAN1->FMR &= ~(1U << 0);  /* Exit Filter Init Mode */

@@ -1,3 +1,3 @@
 @echo off
 echo [FLASH] Deploying to STM32 via OpenOCD...
-openocd -f interface/stlink.cfg -f target/stm32f1x.cfg -c "program can_gateway.elf verify reset exit"
+openocd -f interface/stlink.cfg -f target/stm32f1x.cfg -c "program bin/can_gateway.elf verify reset exit"

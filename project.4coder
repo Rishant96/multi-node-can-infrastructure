@@ -34,6 +34,16 @@ command_list = {
 		},
 	},
 	{
+		.name = "lint",
+		.out = "*compilation*",
+		.footer_panel = true,
+		.save_dirty_files = true,
+		.cursor_at_end = false,
+		.cmd = {		
+			{ "build.bat lint", .os = "win" },
+		},
+	},
+	{
 		.name = "clean",
 		.out = "*compilation*",
 		.footer_panel = true,
@@ -41,6 +51,16 @@ command_list = {
 		.cursor_at_end = false,
 		.cmd = {		
 			{ "clean.bat", .os = "win" },
+		},
+	},
+	{
+		.name = "release",
+		.out = "*compilation*",
+		.footer_panel = true,
+		.save_dirty_files = true,
+		.cursor_at_end = false,
+		.cmd = {		
+			{ "build.bat release", .os = "win" },
 		},
 	},
 	{
@@ -56,5 +76,7 @@ command_list = {
 };
 
 fkey_command[1] = "build";
+fkey_command[2] = "lint";
 fkey_command[3] = "clean";
+fkey_command[4] = "release";
 fkey_command[5] = "flash"; 
